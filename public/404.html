@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ChemNomenclature: Chemical Formulas & Naming Lab</title>
+    <script>
+      // Single Page App redirect for GitHub Pages
+      // Redirects 404s back to the root of the app preserving any subpaths/search
+      var pathSegmentsToKeep = 1;
+      var l = window.location;
+      var repoBase = '/' + l.pathname.slice(1).split('/')[0];
+      l.replace(
+        l.protocol + '//' + l.host + repoBase + '/?' +
+        (l.search ? '&' + l.search.slice(1) : '') +
+        l.hash
+      );
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to ChemNomenclature Lab...</p>
+  </body>
+</html>

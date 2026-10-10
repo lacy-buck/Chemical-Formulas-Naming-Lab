@@ -1,0 +1,6 @@
+{
+  "name": "ChemNomenclature: Chemical Formulas & Naming Lab",
+  "description": "Interactive flowchart, reading guide, and dual-direction practice lab for high school students to master naming chemical compounds and writing formulas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

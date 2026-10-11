@@ -5,6 +5,7 @@ import { IonicModule } from './components/IonicModule';
 import { AcidModule } from './components/AcidModule';
 import { FlowchartDecisionTree } from './components/FlowchartDecisionTree';
 import { MixedPracticeLab } from './components/MixedPracticeLab';
+import { SingleReplacementLab } from './components/SingleReplacementLab';
 import { PolyatomicIonModal } from './components/PolyatomicIonModal';
 
 export default function App() {
@@ -39,6 +40,10 @@ export default function App() {
         {activeTab === 'mixed_practice' && (
           <MixedPracticeLab onOpenPolyatomicModal={() => setIsPolyatomicModalOpen(true)} />
         )}
+
+        {activeTab === 'single_replacement' && (
+          <SingleReplacementLab onOpenPolyatomicModal={() => setIsPolyatomicModalOpen(true)} />
+        )}
       </main>
 
       {/* Polyatomic Ion Reference Modal */}
@@ -53,15 +58,17 @@ export default function App() {
           <div>
             <span className="font-semibold text-slate-800">ChemNomenclature Lab</span>
             <span className="mx-2 text-slate-300">|</span>
-            <span>Based on the Classroom Naming Chemical Compounds Flow Chart</span>
+            <span>Based on the Classroom Naming Chemical Compounds Flow Chart & Chemical Reactions</span>
           </div>
 
           <div className="flex items-center gap-3 text-slate-600 justify-center">
-            <span>Covalent (Nonmetal + Nonmetal)</span>
+            <span>Covalent</span>
             <span>•</span>
-            <span>Ionic (Fixed & Variable)</span>
+            <span>Ionic</span>
             <span>•</span>
-            <span>Acids (Binary & Oxyacids)</span>
+            <span>Acids</span>
+            <span>•</span>
+            <span>Single Replacement</span>
           </div>
         </div>
       </footer>

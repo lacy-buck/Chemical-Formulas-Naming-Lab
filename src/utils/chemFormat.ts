@@ -39,12 +39,14 @@ const REVERSE_SUBSCRIPT_MAP: Record<string, string> = {
 };
 
 /**
- * Converts standard numbers in chemical formulas into unicode subscripts.
- * E.g., "Fe2(SO4)3" -> "Fe₂(SO₄)₃", "H2SO4" -> "H₂SO₄"
+ * Converts numbers that act as chemical subscripts into unicode subscripts.
+ * E.g., "Fe2(SO4)3" -> "Fe₂(SO₄)₃", "H2SO4" -> "H₂SO₄", while preserving leading stoichiometric coefficients (e.g. "2HCl" -> "2HCl").
  */
 export function formatFormulaSubscripts(formula: string): string {
   if (!formula) return '';
-  return formula.replace(/\d/g, (d) => SUBSCRIPT_MAP[d] || d);
+  return formula.replace(/([A-Za-z)\]])(\d+)/g, (_, prefix, digits) => {
+    return prefix + digits.split('').map((d: string) => SUBSCRIPT_MAP[d] || d).join('');
+  });
 }
 
 /**
@@ -558,3 +560,133 @@ export function getFlowchartGuidance(compound: Compound, isFormulaMode: boolean)
 
   return steps;
 }
+
+/**
+ * Normalizes chemical formulas or product expressions for single replacement reactions.
+ * Standardizes "+", spaces, state symbols (aq)/(s)/(g), unicode subscripts, and "No Reaction".
+ */
+export function normalizeReactionProducts(input: string): string {
+  if (!input) return '';
+  let str = input.trim();
+
+  // If user indicated no reaction
+  const nrRegex = /^(no\s*reaction|nr|n\.r\.|none|no\s*rxn|will\s*not\s*react|no)$/i;
+  if (nrRegex.test(str.trim())) {
+    return 'NO_REACTION';
+  }
+
+  // Remove state symbols like (s), (aq), (g), (l)
+  str = str.replace(/\s*\((?:s|aq|g|l)\)/gi, '');
+
+  // Convert unicode subscripts to standard numbers
+  str = normalizeFormulaInput(str);
+
+  // Standardize "+" with spaces
+  str = str.replace(/\s*\+\s*/g, ' + ').trim();
+
+  // Sort reactant/product species alphabetically around "+" so "A + B" matches "B + A"
+  const parts = str.split(' + ').map((p) => p.trim()).filter(Boolean);
+  // Remove leading stoichiometric coefficients if user entered just formulas: e.g. "2NaCl" -> "NaCl", "3Cu" -> "Cu"
+  // Keep both versions or standardized
+  return parts.sort().join(' + ');
+}
+
+export function validateSingleReplacementAnswer(
+  userInput: string,
+  acceptedForms: string[],
+  doesReact: boolean,
+  standardProducts: string
+): AnswerValidation {
+  const trimmed = userInput.trim();
+  if (!trimmed) {
+    return {
+      isCorrect: false,
+      isClose: false,
+      feedback: 'Please enter the reaction products or "No Reaction" (NR).',
+      userFormatted: '',
+      targetFormatted: standardProducts,
+    };
+  }
+
+  const normalizedUser = normalizeReactionProducts(trimmed);
+
+  if (!doesReact) {
+    if (normalizedUser === 'NO_REACTION') {
+      return {
+        isCorrect: true,
+        isClose: false,
+        feedback: 'Correct! Because the free element is less active than the element in the compound, no displacement occurs (No Reaction / NR).',
+        userFormatted: 'No Reaction (NR)',
+        targetFormatted: 'No Reaction (NR)',
+      };
+    } else {
+      return {
+        isCorrect: false,
+        isClose: false,
+        feedback: 'Check the activity series: The free single element is LESS active than the ion in the compound, so this reaction does NOT occur (type "No Reaction" or "NR").',
+        userFormatted: trimmed,
+        targetFormatted: 'No Reaction (NR)',
+      };
+    }
+  }
+
+  // If it DOES react:
+  if (normalizedUser === 'NO_REACTION') {
+    return {
+      isCorrect: false,
+      isClose: false,
+      feedback: 'This reaction actually DOES take place! The free element is higher on the activity series and displaces the ion.',
+      userFormatted: trimmed,
+      targetFormatted: standardProducts,
+    };
+  }
+
+  // Check normalized matching against all accepted product forms
+  const userTokens = normalizedUser
+    .replace(/^\d+/g, '')
+    .split(' + ')
+    .map((s) => s.replace(/^\d+/, '').trim().toLowerCase())
+    .sort();
+
+  for (const form of acceptedForms) {
+    const normAccepted = normalizeReactionProducts(form);
+    if (normAccepted.toLowerCase() === normalizedUser.toLowerCase()) {
+      return {
+        isCorrect: true,
+        isClose: false,
+        feedback: 'Excellent! You correctly identified that a reaction occurs and predicted the correct products!',
+        userFormatted: formatFormulaSubscripts(trimmed),
+        targetFormatted: formatFormulaSubscripts(standardProducts),
+      };
+    }
+
+    // Check with/without coefficients
+    const acceptedTokens = normAccepted
+      .replace(/^\d+/g, '')
+      .split(' + ')
+      .map((s) => s.replace(/^\d+/, '').trim().toLowerCase())
+      .sort();
+
+    if (
+      userTokens.length === acceptedTokens.length &&
+      userTokens.every((val, idx) => val === acceptedTokens[idx])
+    ) {
+      return {
+        isCorrect: true,
+        isClose: false,
+        feedback: 'Correct! The chemical species formed are accurate!',
+        userFormatted: formatFormulaSubscripts(trimmed),
+        targetFormatted: formatFormulaSubscripts(standardProducts),
+      };
+    }
+  }
+
+  return {
+    isCorrect: false,
+    isClose: false,
+    feedback: 'Not quite. Check which ion gets displaced and make sure the new compound has balanced charges (remember diatomic elements like H₂, Cl₂, Br₂, I₂)!',
+    userFormatted: formatFormulaSubscripts(trimmed),
+    targetFormatted: formatFormulaSubscripts(standardProducts),
+  };
+}
+

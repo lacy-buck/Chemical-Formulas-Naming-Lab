@@ -1,12 +1,13 @@
 import React from 'react';
-import { GitBranch, Atom, Zap, Flame as AcidIcon, PenTool } from 'lucide-react';
+import { GitBranch, Atom, Zap, Flame as AcidIcon, PenTool, Repeat } from 'lucide-react';
 
 export type MainModuleTab =
   | 'covalent'
   | 'ionic'
   | 'acids'
   | 'decision_tree'
-  | 'mixed_practice';
+  | 'mixed_practice'
+  | 'single_replacement';
 
 interface HeaderProps {
   activeTab: MainModuleTab;
@@ -25,6 +26,7 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'acids', label: '3. Acids', icon: <AcidIcon className="w-4 h-4 text-rose-600" /> },
     { id: 'decision_tree', label: 'Class Flowchart', icon: <GitBranch className="w-4 h-4 text-blue-600" /> },
     { id: 'mixed_practice', label: 'Mixed Practice Lab', icon: <PenTool className="w-4 h-4 text-emerald-600" /> },
+    { id: 'single_replacement', label: 'Single Replacement', icon: <Repeat className="w-4 h-4 text-teal-600" /> },
   ];
 
   return (

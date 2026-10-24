@@ -627,6 +627,18 @@ export const SingleReplacementLab: React.FC<SingleReplacementLabProps> = ({
                     </strong>
                   </div>
                 </div>
+
+                {/* Transition Metal Charge Specification */}
+                {currentProblem.transitionMetalChargeNote && (
+                  <div className="mt-2.5 max-w-xl mx-auto p-2.5 rounded-xl bg-amber-50/90 border border-amber-300/80 text-amber-950 text-xs flex items-center justify-center gap-2 shadow-2xs">
+                    <span className="font-extrabold px-1.5 py-0.5 rounded bg-amber-200 text-amber-900 text-2xs uppercase tracking-wide">
+                      Ion Charge Specified
+                    </span>
+                    <span className="font-medium text-slate-800">
+                      {currentProblem.transitionMetalChargeNote}
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* ================================================================= */}
@@ -900,6 +912,15 @@ export const SingleReplacementLab: React.FC<SingleReplacementLabProps> = ({
                             {currentProblem.activityComparison}
                           </span>
                         </div>
+
+                        {currentProblem.transitionMetalChargeNote && (
+                          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2">
+                            <span className="font-semibold text-slate-500">Ion Charge Specified:</span>
+                            <span className="font-medium text-amber-900 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200">
+                              {currentProblem.transitionMetalChargeNote}
+                            </span>
+                          </div>
+                        )}
 
                         {/* Step by step thought process */}
                         <div className="pt-1">

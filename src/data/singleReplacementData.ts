@@ -61,6 +61,9 @@ export interface SingleReplacementProblem {
   productsDisplay: string; // e.g. "ZnSO₄ + Cu" or "No Reaction (NR)"
   standardBalancedEquation: string; // e.g. "Zn + CuSO₄ → ZnSO₄ + Cu" or "Cu + 2HCl → No Reaction"
   
+  // Transition metal charge specified for students to predict the correct product formula
+  transitionMetalChargeNote?: string; // e.g. "Assume Iron forms the Fe²⁺ ion (+2 charge)"
+  
   // Species for Step 2 balancing (only relevant when doesReact is true)
   reactantsSpecies: ReactionSpecies[];
   productsSpecies: ReactionSpecies[];
@@ -87,6 +90,7 @@ export const SINGLE_REPLACEMENT_PROBLEMS: SingleReplacementProblem[] = [
     activityComparison: 'Zinc (Zn) is higher than Copper (Cu) on the activity series (Zn > Cu)',
     productsDisplay: 'ZnSO₄ + Cu',
     standardBalancedEquation: 'Zn + CuSO₄ → ZnSO₄ + Cu',
+    transitionMetalChargeNote: 'Assume Zinc forms Zn²⁺ (+2 charge) and Copper is Cu²⁺ (+2 charge)',
     reactantsSpecies: [
       { formula: 'Zn', coefficient: 1 },
       { formula: 'CuSO₄', coefficient: 1 },
@@ -165,6 +169,7 @@ export const SINGLE_REPLACEMENT_PROBLEMS: SingleReplacementProblem[] = [
     activityComparison: 'Aluminum (Al) is higher than Copper (Cu) on the activity series (Al > Cu)',
     productsDisplay: 'AlCl₃ + Cu',
     standardBalancedEquation: '2Al + 3CuCl₂ → 2AlCl₃ + 3Cu',
+    transitionMetalChargeNote: 'Copper in CuCl₂ is Cu²⁺ (+2 charge); Aluminum forms Al³⁺ (+3 charge)',
     reactantsSpecies: [
       { formula: 'Al', coefficient: 2 },
       { formula: 'CuCl₂', coefficient: 3 },
@@ -205,6 +210,7 @@ export const SINGLE_REPLACEMENT_PROBLEMS: SingleReplacementProblem[] = [
     activityComparison: 'Iron (Fe) is higher than Copper (Cu) on the activity series (Fe > Cu)',
     productsDisplay: 'Fe(NO₃)₂ + Cu',
     standardBalancedEquation: 'Fe + Cu(NO₃)₂ → Fe(NO₃)₂ + Cu',
+    transitionMetalChargeNote: 'Assume Iron forms Fe²⁺ (+2 charge); Copper in Cu(NO₃)₂ is Cu²⁺ (+2 charge)',
     reactantsSpecies: [
       { formula: 'Fe', coefficient: 1 },
       { formula: 'Cu(NO₃)₂', coefficient: 1 },
@@ -279,6 +285,7 @@ export const SINGLE_REPLACEMENT_PROBLEMS: SingleReplacementProblem[] = [
     activityComparison: 'Zinc (Zn) is higher than Silver (Ag) on the activity series (Zn > Ag)',
     productsDisplay: 'Zn(NO₃)₂ + Ag',
     standardBalancedEquation: 'Zn + 2AgNO₃ → Zn(NO₃)₂ + 2Ag',
+    transitionMetalChargeNote: 'Assume Zinc forms Zn²⁺ (+2 charge); Silver is Ag⁺ (+1 charge)',
     reactantsSpecies: [
       { formula: 'Zn', coefficient: 1 },
       { formula: 'AgNO₃', coefficient: 2 },
@@ -318,6 +325,7 @@ export const SINGLE_REPLACEMENT_PROBLEMS: SingleReplacementProblem[] = [
     activityComparison: 'Lead (Pb) is higher than Silver (Ag) on the activity series (Pb > Ag)',
     productsDisplay: 'Pb(NO₃)₂ + Ag',
     standardBalancedEquation: 'Pb + 2AgNO₃ → Pb(NO₃)₂ + 2Ag',
+    transitionMetalChargeNote: 'Assume Lead forms Pb²⁺ (+2 charge); Silver is Ag⁺ (+1 charge)',
     reactantsSpecies: [
       { formula: 'Pb', coefficient: 1 },
       { formula: 'AgNO₃', coefficient: 2 },
@@ -357,6 +365,7 @@ export const SINGLE_REPLACEMENT_PROBLEMS: SingleReplacementProblem[] = [
     activityComparison: 'Nickel (Ni) is higher than Silver (Ag) on the activity series (Ni > Ag)',
     productsDisplay: 'Ni(NO₃)₂ + Ag',
     standardBalancedEquation: 'Ni + 2AgNO₃ → Ni(NO₃)₂ + 2Ag',
+    transitionMetalChargeNote: 'Assume Nickel forms Ni²⁺ (+2 charge); Silver is Ag⁺ (+1 charge)',
     reactantsSpecies: [
       { formula: 'Ni', coefficient: 1 },
       { formula: 'AgNO₃', coefficient: 2 },
@@ -396,6 +405,7 @@ export const SINGLE_REPLACEMENT_PROBLEMS: SingleReplacementProblem[] = [
     activityComparison: 'Iron (Fe) is higher than Hydrogen (H) on the activity series (Fe > H)',
     productsDisplay: 'FeCl₂ + H₂',
     standardBalancedEquation: 'Fe + 2HCl → FeCl₂ + H₂',
+    transitionMetalChargeNote: 'Assume Iron forms the Fe²⁺ ion (+2 charge)',
     reactantsSpecies: [
       { formula: 'Fe', coefficient: 1 },
       { formula: 'HCl', coefficient: 2 },
@@ -431,6 +441,7 @@ export const SINGLE_REPLACEMENT_PROBLEMS: SingleReplacementProblem[] = [
     activityComparison: 'Magnesium (Mg) is higher than Zinc (Zn) on the activity series (Mg > Zn)',
     productsDisplay: 'MgSO₄ + Zn',
     standardBalancedEquation: 'Mg + ZnSO₄ → MgSO₄ + Zn',
+    transitionMetalChargeNote: 'Zinc in ZnSO₄ has a +2 charge (Zn²⁺); Magnesium forms Mg²⁺ (+2 charge)',
     reactantsSpecies: [
       { formula: 'Mg', coefficient: 1 },
       { formula: 'ZnSO₄', coefficient: 1 },
